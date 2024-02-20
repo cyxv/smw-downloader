@@ -114,8 +114,12 @@ def download_file(file_id: int | str, path: str = None) -> str:
 
 def download_files_from_list(list_path: str = "to_download.txt", out_path: str = None) -> list:
     '''Downloads smwcentral files from a .txt file with each ID on a seperate line.'''
-    if len(sys.argv) > 1:
-        list_path = sys.argv[1]
+    if list_path == "to_download.txt":
+        if len(sys.argv) > 1:
+            list_path = sys.argv[1]
+        elif not os.path.isfile("to_download.txt"):
+            print("You need to either specify a list of files to download or create one called \"to_download.txt\".")
+            exit()
 
     with open(list_path, "r") as f:
         file_list = [x.strip() for x in f.readlines()]

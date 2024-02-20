@@ -1,2 +1,6 @@
+bin/
+output/
+temp/
 *.sfc
 cleanup.sh
+to_download.txt
