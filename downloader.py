@@ -18,27 +18,11 @@ def vprint(string: str) -> None:
     if verbose:
         print(string)
 
-def yes_no(string: str, default: bool = True) -> bool:
-    yes_responses = ["y", "ye", "yes"]
-    no_responses = ["n", "no"]
-
-    user_input = input(f"{string} [{'Y' if default else 'y'}/{'n' if default else 'N'}]")
-    if input == "":
-        return default
-
-    if input in yes_responses:
-        return True
-    if input in no_responses:
-        return False
-
-    print("Invalid input.")
-    yes_no(string, default)
-
 def ensure_flips() -> str | bool:
     '''Ensures that flips is installed, returns path to flips'''
 
     def download_flips():
-        print("Flips not found in PATH, downloading...")
+        vprint("Flips not found in PATH, downloading...")
 
         platforms = {
             "linux": "flips-linux",
@@ -70,6 +54,7 @@ def ensure_flips() -> str | bool:
             if os.path.exists(flips_path):
                 return flips_path
 
+        vprint("Finished downloading flips")
         return download_flips()
 
     if sys.platform == "win32":
