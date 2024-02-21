@@ -4,15 +4,14 @@ import os
 import shutil
 import subprocess
 import sys
-import urllib
+import urllib.parse
 import zipfile
 
 # Settings
 base_rom = "!smw.sfc"
 api = "https://www.smwcentral.net/ajax.php"
 verbose = True
-
-# Don't edit below here unless you know what you're doing! (or do IDRC)
+# End of settings
 
 def vprint(string: str) -> None:
     if verbose:
@@ -81,20 +80,17 @@ def download_file(file_id: int | str, path: str = None) -> str:
         "id": file_id
     }, timeout=10).text)
     
-    name = file_info["name"]
-    
+    name = file_info["name"] 
     vprint(f"Downloaded \"{name}\"")
 
     download_url = urllib.parse.unquote(file_info["download_url"])
     req = requests.get(download_url)
 
     file_name = download_url.split("/")[-1]
-
     with open(file_name, "wb") as out_file:
         out_file.write(req.content)
 
     vprint(f"Wrote {file_name} to {path}")
-
     return file_name
 
 def download_files_from_list(list_path: str = "to_download.txt", out_path: str = None) -> list:
@@ -129,7 +125,7 @@ def bps_from_zip(zip_name: str) -> None:
         zf.extractall("temp")
     
     bps_files = list()
-    for path, dirs, files in os.walk("temp"):
+    for path, _, files in os.walk("temp"):
         for file in files:
             if ".bps" in file:
                 vprint(f"Found file {path}/{file}")
