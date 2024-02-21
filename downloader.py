@@ -91,15 +91,8 @@ def download_file(file_id: int | str, path: str = "") -> str:
     vprint(f"Wrote {file_name} to {path}")
     return file_name
 
-def download_files_from_list(list_path: str = "to_download.txt", out_path: str = os.getcwd()) -> list:
+def download_files_from_list(list_path: str, out_path: str = os.getcwd()) -> list:
     '''Downloads smwcentral files from a .txt file with each ID on a seperate line.'''
-    if list_path == "to_download.txt":
-        if len(sys.argv) > 1:
-            list_path = sys.argv[1]
-        elif not os.path.isfile("to_download.txt"):
-            print("You need to either specify a list of files to download or create one called \"to_download.txt\".")
-            exit()
-
     with open(list_path, "r") as f:
         file_list = [x.strip() for x in f.readlines()]
     
@@ -153,7 +146,11 @@ def clear_bps_files() -> None:
             vprint(f"Removed file {file}.")
 
 if __name__ == "__main__":
-    files = download_files_from_list()
+    if len(sys.argv) <= 1:    
+        print("You need to specify a list of files to download.")
+        exit()
+
+    files = download_files_from_list(sys.argv[1])
     
     for file in files:
         bps_from_zip(file)
