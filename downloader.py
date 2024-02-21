@@ -15,7 +15,7 @@ def vprint(string: str) -> None:
     if settings["Advanced"]["verbose"]:
         print(string)
 
-def ensure_flips() -> str | bool:
+def ensure_flips() -> str:
     '''Ensures that flips is installed, returns path to flips'''
 
     def download_flips():
@@ -60,9 +60,9 @@ def ensure_flips() -> str | bool:
         else:
             return download_flips()
             
-def download_file(file_id: int | str, path: str = None) -> str:
+def download_file(file_id: int | str, path: str = "") -> str:
     '''Downloads an smwcentral file using its ID and puts it in the specified path.'''
-    if path is None:
+    if path == "":
         path = os.getcwd()
     
     # account for URLs
@@ -91,7 +91,7 @@ def download_file(file_id: int | str, path: str = None) -> str:
     vprint(f"Wrote {file_name} to {path}")
     return file_name
 
-def download_files_from_list(list_path: str = "to_download.txt", out_path: str = None) -> list:
+def download_files_from_list(list_path: str = "to_download.txt", out_path: str = os.getcwd()) -> list:
     '''Downloads smwcentral files from a .txt file with each ID on a seperate line.'''
     if list_path == "to_download.txt":
         if len(sys.argv) > 1:
