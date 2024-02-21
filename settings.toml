@@ -1,0 +1,6 @@
+[ROMs]
+smw = "!smw.sfc"
+
+[Advanced]
+api = "https://www.smwcentral.net/ajax.php"
+verbose = true

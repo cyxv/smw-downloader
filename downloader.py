@@ -4,17 +4,15 @@ import os
 import shutil
 import subprocess
 import sys
+import tomllib
 import urllib.parse
 import zipfile
 
-# Settings
-base_rom = "!smw.sfc"
-api = "https://www.smwcentral.net/ajax.php"
-verbose = True
-# End of settings
+with open("settings.toml", "r") as settings_file:
+    settings = tomllib.loads(settings_file.read())
 
 def vprint(string: str) -> None:
-    if verbose:
+    if settings["Advanced"]["verbose"]:
         print(string)
 
 def ensure_flips() -> str | bool:
@@ -74,7 +72,7 @@ def download_file(file_id: int | str, path: str = None) -> str:
                 file_id = chunk.split("=")[-1]
                 break
 
-    file_info = json.loads(requests.get(api, params={
+    file_info = json.loads(requests.get(settings["Advanced"]["api"], params={
         "a": "getfile",
         "v": 2,
         "id": file_id
@@ -145,7 +143,7 @@ def patch_rom(patch_path: str) -> None:
         os.mkdir("output")
 
     vprint(f"Patching rom \"{patch_path}\"")
-    subprocess.run([ensure_flips(), "-a", patch_path, base_rom, f'output/{patch_path.split(".bps")[0]}.sfc'])
+    subprocess.run([ensure_flips(), "-a", patch_path, settings["ROMs"]["smw"], f'output/{patch_path.split(".bps")[0]}.sfc'])
 
 def clear_bps_files() -> None:
     '''Removes all bps files from current working directory'''
