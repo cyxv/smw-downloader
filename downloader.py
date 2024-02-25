@@ -1,3 +1,4 @@
+import hashlib
 import json
 import requests
 import os
@@ -10,6 +11,10 @@ import zipfile
 
 with open("settings.toml", "r") as settings_file:
     settings = tomllib.loads(settings_file.read())
+
+checksums = {
+    "smw": "cdd3c8c37322978ca8669b34bc89c804"
+}
 
 def vprint(string: str) -> None:
     if settings["Advanced"]["verbose"]:
@@ -146,7 +151,16 @@ def clear_bps_files() -> None:
             vprint(f"Removed file {file}.")
 
 if __name__ == "__main__":
-    if len(sys.argv) <= 1:    
+    smw = settings["ROMs"]["smw"]
+    if not os.path.isfile(smw):
+        print("You need a Super Mario World ROM.")
+        exit()
+
+    if hashlib.md5(open(smw, "rb").read()).hexdigest() != checksums["smw"]:
+        print("Invalid SMW base ROM. Please provide a clean US ROM.")
+        exit()
+
+    if len(sys.argv) <= 1:
         print("You need to specify a list of files to download.")
         exit()
 
