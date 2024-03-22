@@ -39,6 +39,7 @@ def ensure_flips() -> str:
 
         with zipfile.ZipFile("floating.zip", "r") as zf:
             zf.extractall("bin")
+        os.remove("floating.zip")
 
         for file in os.listdir("bin"):
             if file != platforms[sys.platform]:

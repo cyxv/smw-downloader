@@ -1,5 +1,5 @@
 [ROMs]
-smw = "!smw.sfc"
+smw = "smw.sfc"
 
 [Advanced]
 api = "https://www.smwcentral.net/ajax.php"
